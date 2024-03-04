@@ -10,15 +10,18 @@ import moveIcon from "../public/icons/move.svg";
 import photoIcon from "../public/icons/photo.svg";
 
 const Canvas = () => {
-  const [imageURL, setImageURL] = useState(null);
+  const [imageURL, setImageURL] = useState<string>("");
   const [selected, setSelected] = useState(false);
   const [isFrozen, setIsFrozen] = useState(false); // Nouvel état pour gérer le mode figé
 
-  const handleUpload = (file) => {
+  const handleUpload = (file: Blob) => {
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImageURL(reader.result);
-      setSelected(true); // Sélectionner automatiquement l'image chargée
+      if (typeof reader.result === "string") {
+        setImageURL(reader.result);
+        setIsFrozen(false);
+        setSelected(true);
+      }
     };
     reader.readAsDataURL(file);
   };
@@ -34,7 +37,7 @@ const Canvas = () => {
             "image/webp",
           ]}
           onSelect={(e) => {
-            let files = Array.from(e);
+            let files = Array.from(e as FileList);
             handleUpload(files[0]);
           }}
         >

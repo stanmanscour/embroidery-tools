@@ -1,7 +1,8 @@
 "use client";
 
+import Konva from "konva";
 import React, { useRef, useEffect, useState } from "react";
-import { Stage, Layer, Text, Image, Transformer } from "react-konva";
+import { Image, Transformer } from "react-konva";
 import useImage from "use-image";
 
 export const TransformableImage = ({
@@ -15,8 +16,8 @@ export const TransformableImage = ({
   imageURL: string;
   isFrozen: boolean;
 }) => {
-  const imageRef = useRef(null);
-  const transformerRef = useRef(null);
+  const imageRef = useRef<Konva.Image>(null);
+  const transformerRef = useRef<Konva.Transformer>(null);
   const [image] = useImage(imageURL);
   const [dimensions, setDimensions] = useState({
     x: 20,
@@ -39,19 +40,23 @@ export const TransformableImage = ({
   }, [image]);
 
   useEffect(() => {
+    if (!transformerRef.current || !imageRef.current) return;
+
     if (isSelected && !isFrozen) {
       transformerRef.current.nodes([imageRef.current]);
-      transformerRef.current.getLayer().batchDraw();
+      transformerRef.current.getLayer()?.batchDraw();
     } else {
       transformerRef.current.nodes([]);
-      transformerRef.current.getLayer().batchDraw();
+      transformerRef.current.getLayer()?.batchDraw();
     }
   }, [isSelected, isFrozen]);
 
   const handleTransformEnd = () => {
+    if (!imageRef.current) return;
+
     const node = imageRef.current;
-    const scaleX = node.scaleX();
-    const scaleY = node.scaleY();
+    const scaleX = node?.scaleX();
+    const scaleY = node?.scaleY();
 
     // Appliquer les transformations et réinitialiser l'échelle
     setDimensions({
