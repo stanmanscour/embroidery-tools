@@ -1,0 +1,24 @@
+{
+  "id": "embroidery-tools",
+  "name": "Outils de broderie",
+  "short_name": "embroidery-tools",
+  "description": "La boite à outil pour broder",
+  "icons": [
+    {
+      "src": "./logo384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "./logo512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait"
+}

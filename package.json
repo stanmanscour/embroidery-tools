@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^10.2.5",
     "konva": "^9.3.5",
     "next": "14.1.2",
     "react": "^18",
