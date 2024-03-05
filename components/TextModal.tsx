@@ -66,7 +66,6 @@ export const TextModal = ({
           <form className="p-3">
             <h1 className="text-center text-lg">Ajouter du texte</h1>
             <div className="flex flex-col gap-3">
-              <pre>{JSON.stringify(textConfig)}</pre>
               <TextField className="flex flex-col gap-1" autoFocus>
                 <Label className="text-sm">Texte</Label>
                 <Input
