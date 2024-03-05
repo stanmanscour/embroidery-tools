@@ -1,14 +1,9 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { Stage, Layer, Text } from "react-konva";
-import { TransformableImage } from "@/components/TransformableImage";
 import {
-  ToggleButton,
-  FileTrigger,
   Button,
-  DialogTrigger,
   Modal,
   Dialog,
   Select,
@@ -26,8 +21,14 @@ import moveIcon from "../public/icons/move.svg";
 import photoIcon from "../public/icons/photo.svg";
 import saveIcon from "../public/icons/save.svg";
 import { TransformableText } from "./TransformableText";
+import { caveat, inter } from "@/app/fonts";
 
 export type textConfig = { content: string; fontFamily: string };
+
+const options = [
+  { label: "Inter", fontFamily: inter.style.fontFamily },
+  { label: "Caveat", fontFamily: caveat.style.fontFamily },
+];
 
 export const TextModal = ({
   isOpen,
@@ -65,21 +66,32 @@ export const TextModal = ({
           <form className="p-3">
             <h1 className="text-center text-lg">Ajouter du texte</h1>
             <div className="flex flex-col gap-3">
+              <pre>{JSON.stringify(textConfig)}</pre>
               <TextField className="flex flex-col gap-1" autoFocus>
                 <Label className="text-sm">Texte</Label>
                 <Input
+                  value={textConfig.content}
                   onChange={(e) =>
                     setTextConfig((prevState) => ({
                       ...prevState,
                       content: e.target.value,
                     }))
                   }
-                  placeholder="Bonjour..."
+                  placeholder="Texte..."
                   className="p-2 border border-gray-200 rounded-md"
                 />
               </TextField>
 
-              <Select className="flex flex-col gap-1">
+              <Select
+                selectedKey={textConfig.fontFamily}
+                onSelectionChange={(fontFamily) =>
+                  setTextConfig((prevState) => ({
+                    ...prevState,
+                    fontFamily: fontFamily as string,
+                  }))
+                }
+                className="flex flex-col gap-1"
+              >
                 <Label className="text-sm">Police</Label>
                 <Button className="flex flex-row w-full p-2 border border-gray-200 rounded-md justify-between">
                   <SelectValue />
@@ -87,17 +99,21 @@ export const TextModal = ({
                 </Button>
                 <Popover className="min-w-[var(--trigger-width)]">
                   <ListBox className="bg-white border w-full p-2 cursor-pointer rounded-md">
-                    <ListBoxItem>Arial</ListBoxItem>
-                    <ListBoxItem>Roboto</ListBoxItem>
-                    <ListBoxItem>Dog</ListBoxItem>
-                    <ListBoxItem>Kangaroo</ListBoxItem>
-                    <ListBoxItem>Panda</ListBoxItem>
-                    <ListBoxItem>Snake</ListBoxItem>
+                    {options.map((option) => (
+                      <ListBoxItem
+                        key={option.label}
+                        id={option.fontFamily}
+                        // value={{ fontFamily: roboto_mono.style.fontFamily }}
+                        className={option.fontFamily}
+                      >
+                        {option.label}
+                      </ListBoxItem>
+                    ))}
                   </ListBox>
                 </Popover>
               </Select>
 
-              <div className="flex flex-row justify-end gap-2 mt-2">
+              <div className="flex flex-row justify-between gap-2 mt-2">
                 <Button
                   onPress={() => setIsOpen(false)}
                   className="flex gap-1 rounded-md  p-2 border-2 items-center border-gray-200"
@@ -108,13 +124,13 @@ export const TextModal = ({
                   onPress={handleSave}
                   className="flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
                 >
-                  <span className="text-black text-sm">Enregistrer</span>
                   <Image
                     height={20}
                     priority
                     src={saveIcon}
                     alt="Choisir une image"
                   />
+                  <span className="text-black text-sm">Enregistrer</span>
                 </Button>
               </div>
             </div>

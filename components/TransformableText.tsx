@@ -1,17 +1,21 @@
 "use client";
 
+import { caveat } from "@/app/fonts";
 import Konva from "konva";
 import React, { useRef, useEffect, useState } from "react";
 import { Text, Transformer } from "react-konva";
 
 export const TransformableText = ({
-  text,
+  textConfig,
   isSelected,
   isFrozen,
   onSelect,
   id,
 }: {
-  text: string;
+  textConfig: {
+    content: string;
+    fontFamily: string;
+  };
   id: string;
   onSelect: (id: string) => void;
   isSelected: boolean;
@@ -69,8 +73,10 @@ export const TransformableText = ({
         draggable={!isFrozen}
         onDragEnd={handleTransformEnd}
         onTransformEnd={handleTransformEnd}
-        text={text}
         fontSize={25}
+        text={textConfig.content}
+        fontFamily={textConfig.fontFamily}
+        // fontFamily={caveat.style.fontFamily}
         {...dimensions}
       />
       <Transformer

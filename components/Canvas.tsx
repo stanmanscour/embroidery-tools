@@ -118,7 +118,7 @@ const Canvas = () => {
           {textContent.content && (
             <TransformableText
               id="text1"
-              text={textContent.content}
+              textConfig={textContent}
               isSelected={selected === "text1" && !isFrozen}
               onSelect={setSelected}
               isFrozen={isFrozen}
