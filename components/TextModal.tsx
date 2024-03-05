@@ -26,8 +26,16 @@ import { caveat, inter } from "@/app/fonts";
 export type textConfig = { content: string; fontFamily: string };
 
 const options = [
-  { label: "Inter", fontFamily: inter.style.fontFamily },
-  { label: "Caveat", fontFamily: caveat.style.fontFamily },
+  {
+    label: "Inter",
+    fontFamily: inter.style.fontFamily,
+    className: inter.className,
+  },
+  {
+    label: "Caveat",
+    fontFamily: caveat.style.fontFamily,
+    className: caveat.className,
+  },
 ];
 
 export const TextModal = ({
@@ -77,7 +85,7 @@ export const TextModal = ({
                     }))
                   }
                   placeholder="Texte..."
-                  className="p-2 border border-gray-200 rounded-md"
+                  className="p-2 border border-gray-200 rounded-md data-[focused]:bg-slate-50 hover:bg-slate-50 cursor-pointer"
                 />
               </TextField>
 
@@ -92,18 +100,18 @@ export const TextModal = ({
                 className="flex flex-col gap-1"
               >
                 <Label className="text-sm">Police</Label>
-                <Button className="flex flex-row w-full p-2 border border-gray-200 rounded-md justify-between">
+                <Button className="flex flex-row w-full p-2 border border-gray-200 data-[pressed]:bg-slate-50 rounded-md justify-between focused:hover:bg-slate-50 hover:bg-slate-50">
                   <SelectValue />
                   <span aria-hidden="true">▼</span>
                 </Button>
                 <Popover className="min-w-[var(--trigger-width)]">
-                  <ListBox className="bg-white border w-full p-2 cursor-pointer rounded-md">
+                  <ListBox className="bg-white border w-full cursor-pointer rounded-md [&>*:last-child]:border-b-0">
                     {options.map((option) => (
                       <ListBoxItem
                         key={option.label}
                         id={option.fontFamily}
                         // value={{ fontFamily: roboto_mono.style.fontFamily }}
-                        className={option.fontFamily}
+                        className={`p-2 border-b text-md ${option.className} hover:bg-slate-50`}
                       >
                         {option.label}
                       </ListBoxItem>
@@ -115,13 +123,13 @@ export const TextModal = ({
               <div className="flex flex-row justify-between gap-2 mt-2">
                 <Button
                   onPress={() => setIsOpen(false)}
-                  className="flex gap-1 rounded-md  p-2 border-2 items-center border-gray-200"
+                  className="hover:bg-slate-50 flex gap-1 rounded-md  p-2 border-2 items-center border-gray-200"
                 >
                   <span className="text-black text-sm">Annuler</span>
                 </Button>
                 <Button
                   onPress={handleSave}
-                  className="flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
+                  className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
                 >
                   <Image
                     height={20}

@@ -54,7 +54,7 @@ const Canvas = () => {
               handleUpload(files[0]);
             }}
           >
-            <Button className="flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200">
+            <Button className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200">
               <Image
                 height={20}
                 priority
@@ -68,7 +68,7 @@ const Canvas = () => {
           <DialogTrigger>
             <Button
               onPress={() => setTextModalOpen(true)}
-              className="flex gap-1 rounded-md bg-gray-100 p-2 border-2  border-gray-200"
+              className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2  border-gray-200"
             >
               <Image
                 height={20}
@@ -87,7 +87,7 @@ const Canvas = () => {
         </div>
 
         <ToggleButton
-          className="flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
+          className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
           isSelected={isFrozen}
           onChange={() => setIsFrozen(!isFrozen)}
           aria-label="Star"
