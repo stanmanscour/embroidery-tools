@@ -9,7 +9,7 @@ export default function Page() {
   return (
     <div
       style={{ backgroundImage: `url('/quadrillage2.jpg')` }}
-      className="h-screen bg-cover bg-center text-white border-b-8 border-b-solid border-b-slate-400"
+      className="h-screen bg-cover bg-center text-white"
     >
       <Canvas />
     </div>

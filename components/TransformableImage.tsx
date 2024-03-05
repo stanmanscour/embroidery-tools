@@ -10,9 +10,11 @@ export const TransformableImage = ({
   isSelected,
   onSelect,
   isFrozen,
+  id,
 }: {
+  id: string;
   isSelected: boolean;
-  onSelect: () => void;
+  onSelect: (id: string) => void;
   imageURL: string;
   isFrozen: boolean;
 }) => {
@@ -74,8 +76,8 @@ export const TransformableImage = ({
   return (
     <>
       <Image
-        onClick={onSelect}
-        onTap={onSelect}
+        onClick={() => onSelect(id)}
+        onTap={() => onSelect(id)}
         image={image}
         ref={imageRef}
         {...dimensions}
