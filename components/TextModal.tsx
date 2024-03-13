@@ -21,7 +21,13 @@ import moveIcon from "../public/icons/move.svg";
 import photoIcon from "../public/icons/photo.svg";
 import saveIcon from "../public/icons/save.svg";
 import { TransformableText } from "./TransformableText";
-import { caveat, inter } from "@/app/fonts";
+import {
+  caveat,
+  inter,
+  libre_barskerville,
+  noto_sans,
+  roboto,
+} from "@/app/fonts";
 
 export type textConfig = { content: string; fontFamily: string };
 
@@ -35,6 +41,21 @@ const options = [
     label: "Caveat",
     fontFamily: caveat.style.fontFamily,
     className: caveat.className,
+  },
+  {
+    label: "Roboto",
+    fontFamily: roboto.style.fontFamily,
+    className: roboto.className,
+  },
+  {
+    label: "Noto Sans",
+    fontFamily: noto_sans.style.fontFamily,
+    className: noto_sans.className,
+  },
+  {
+    label: "Libre Barskerville",
+    fontFamily: libre_barskerville.style.fontFamily,
+    className: libre_barskerville.className,
   },
 ];
 
