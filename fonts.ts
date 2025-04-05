@@ -206,3 +206,5 @@ export const options = [
     className: monoton.className,
   },
 ];
+
+console.log(options.length);
