@@ -1,28 +1,12 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import Image from "next/image";
+import React from "react";
+
 import { Stage, Layer } from "react-konva";
-
-import { Button } from "@/components/ui/button";
-import { Toggle } from "@/components/ui/toggle";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
-
-import moveIcon from "../public/icons/move.svg";
-import photoIcon from "../public/icons/photo.svg";
 
 import { TransformableImage } from "./TransformableImage";
 import { TransformableText } from "./TransformableText";
-import { options } from "@/fonts";
-import { Sidebar } from "./Sidebar";
+
 import { UploadItem } from "./toolbar/UploadItem";
 import { EditTextItem } from "./toolbar/EditTextItem";
 import { FreezeCanvasItem } from "./toolbar/FreezeCanvasItem";
@@ -31,11 +15,11 @@ import { useCanvasTool } from "@/context/CanvasToolProvider";
 const Canvas = () => {
   const {
     isFrozen,
-    setIsFrozen,
+
     textContent,
-    setTextContent,
+
     imageURL,
-    setImageURL,
+
     selected,
     setSelected,
   } = useCanvasTool();

@@ -1,23 +1,5 @@
 import { useCanvasTool } from "@/context/CanvasToolProvider";
-import {
-  CaseSensitive,
-  ChevronUp,
-  ChevronUpCircle,
-  File,
-  FileScan,
-  Hand,
-  ImagePlus,
-  LockKeyhole,
-  LockKeyholeOpen,
-  Paperclip,
-  Pin,
-  PinOff,
-  Sparkles,
-  Text,
-  Type,
-  TypeOutline,
-  WholeWord,
-} from "lucide-react";
+import { Hand, LockKeyhole, LockKeyholeOpen } from "lucide-react";
 
 export const FreezeCanvasItem = () => {
   const { isFrozen, setIsFrozen } = useCanvasTool();

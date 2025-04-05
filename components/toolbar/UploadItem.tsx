@@ -1,5 +1,5 @@
 import { useCanvasTool } from "@/context/CanvasToolProvider";
-import { ImagePlus, Paperclip } from "lucide-react";
+import { ImagePlus } from "lucide-react";
 import { useRef } from "react";
 
 export const UploadItem = () => {
