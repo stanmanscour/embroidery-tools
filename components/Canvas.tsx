@@ -1,19 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { Stage, Layer } from "react-konva";
-import { TransformableImage } from "@/components/TransformableImage";
-import {
-  ToggleButton,
-  FileTrigger,
-  Button,
-  DialogTrigger,
-} from "react-aria-components";
+
+import { Button } from "@/components/ui/button";
+import { Toggle } from "@/components/ui/toggle";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 import moveIcon from "../public/icons/move.svg";
 import photoIcon from "../public/icons/photo.svg";
 import textIcon from "../public/icons/text.svg";
+
+import { TransformableImage } from "./TransformableImage";
 import { TransformableText } from "./TransformableText";
 import { TextModal } from "./TextModal";
 
@@ -25,7 +24,9 @@ const Canvas = () => {
   });
   const [isTextModalOpen, setTextModalOpen] = useState(false);
   const [selected, setSelected] = useState("");
-  const [isFrozen, setIsFrozen] = useState(false); // Nouvel état pour gérer le mode figé
+  const [isFrozen, setIsFrozen] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = (file: Blob) => {
     const reader = new FileReader();
@@ -42,55 +43,62 @@ const Canvas = () => {
     <div className="">
       <div className="flex flex-row p-3 justify-between">
         <div className="flex flex-row gap-2">
-          <FileTrigger
-            acceptedFileTypes={[
-              "image/png",
-              "image/jpeg",
-              "image/svg+xml",
-              "image/webp",
-            ]}
-            onSelect={(e) => {
-              let files = Array.from(e as FileList);
-              handleUpload(files[0]);
+          {/* Image Upload (file input trigger) */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/png, image/jpeg, image/svg+xml, image/webp"
+            className="hidden"
+            onChange={(e) => {
+              if (e.target.files?.[0]) {
+                handleUpload(e.target.files[0]);
+              }
             }}
+          />
+          <Button
+            variant="secondary"
+            onClick={() => fileInputRef.current?.click()}
+            className="flex gap-1 items-center border-2"
           >
-            <Button className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200">
-              <Image
-                height={20}
-                priority
-                src={photoIcon}
-                alt="Choisir une image"
-              />
-              <span className="text-black text-sm">Image</span>
-            </Button>
-          </FileTrigger>
+            <Image
+              height={20}
+              priority
+              src={photoIcon}
+              alt="Choisir une image"
+            />
+            <span className="text-black text-sm">Image</span>
+          </Button>
 
-          <DialogTrigger>
-            <Button
-              onPress={() => setTextModalOpen(true)}
-              className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2  border-gray-200"
-            >
-              <Image
-                height={20}
-                priority
-                src={textIcon}
-                alt="Ajouter du texte"
-              />
-              <span className="text-black text-sm">Texte</span>
-            </Button>
+          {/* Text Modal Trigger */}
+          <Dialog open={isTextModalOpen} onOpenChange={setTextModalOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="secondary"
+                onClick={() => setTextModalOpen(true)}
+                className="flex gap-1 items-center border-2"
+              >
+                <Image
+                  height={20}
+                  priority
+                  src={textIcon}
+                  alt="Ajouter du texte"
+                />
+                <span className="text-black text-sm">Texte</span>
+              </Button>
+            </DialogTrigger>
             <TextModal
               isOpen={isTextModalOpen}
               setIsOpen={setTextModalOpen}
               onAddText={setTextContent}
             />
-          </DialogTrigger>
+          </Dialog>
         </div>
 
-        <ToggleButton
-          className="hover:bg-slate-50 flex gap-1 rounded-md bg-gray-100 p-2 border-2 items-center border-gray-200"
-          isSelected={isFrozen}
-          onChange={() => setIsFrozen(!isFrozen)}
-          aria-label="Star"
+        {/* Freeze toggle */}
+        <Toggle
+          pressed={isFrozen}
+          onPressedChange={() => setIsFrozen(!isFrozen)}
+          className="flex gap-1 items-center bg-gray-100 border-2 hover:bg-slate-50"
         >
           <Image
             height={20}
@@ -98,21 +106,21 @@ const Canvas = () => {
             src={moveIcon}
             alt="Débloquer / Bloquer"
           />
-
           <span className="text-black text-sm">
             {isFrozen ? "Débloquer" : "Bloquer"}
           </span>
-        </ToggleButton>
+        </Toggle>
       </div>
+
       <Stage width={window.innerWidth} height={window.innerHeight}>
         <Layer>
           {imageURL && (
             <TransformableImage
               id="image1"
               imageURL={imageURL}
-              isSelected={selected === "image1" && !isFrozen} // Désactiver la sélection si l'image est figée
+              isSelected={selected === "image1" && !isFrozen}
               onSelect={setSelected}
-              isFrozen={isFrozen} // Passer l'état figé au composant TransformableImage
+              isFrozen={isFrozen}
             />
           )}
           {textContent.content && (
