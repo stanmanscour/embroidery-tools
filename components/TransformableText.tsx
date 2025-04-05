@@ -1,6 +1,5 @@
 "use client";
 
-import { caveat } from "@/app/fonts";
 import Konva from "konva";
 import React, { useRef, useEffect, useState } from "react";
 import { Text, Transformer } from "react-konva";
@@ -76,7 +75,6 @@ export const TransformableText = ({
         fontSize={25}
         text={textConfig.content}
         fontFamily={textConfig.fontFamily}
-        // fontFamily={caveat.style.fontFamily}
         {...dimensions}
       />
       <Transformer
