@@ -31,7 +31,7 @@ export const EditTextItem = () => {
   return (
     <>
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-h-full rounded-lg w-full max-w-xl overflow-y-auto">
+        <DialogContent className="max-h-full rounded-lg w-[90%] max-w-xl overflow-y-auto mt-4">
           <DialogHeader>
             {/* <DialogTitle className="text-center "> */}
             <div className="flex flex-row gap-2 justify-center">

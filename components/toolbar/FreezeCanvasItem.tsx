@@ -31,7 +31,7 @@ export const FreezeCanvasItem = () => {
         <div className="flex flex-row gap-1 items-center">
           <Hand height={24} width={24} />
           {isFrozen ? (
-            <LockKeyhole height={16} width={16} color="orange" />
+            <LockKeyhole height={16} width={16} color="red" />
           ) : (
             <LockKeyholeOpen height={16} width={16} color="lightgray" />
           )}
