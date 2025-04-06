@@ -1,10 +1,21 @@
+"use client";
+
 import { useCanvasTool } from "@/context/CanvasToolProvider";
-import { ImagePlus } from "lucide-react";
-import { useRef } from "react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ImagePlus, Images, Upload } from "lucide-react";
+import { useRef, useState } from "react";
 
 export const UploadItem = () => {
-  const { setImageURL, setIsFrozen } = useCanvasTool();
+  const { setImageURL, imageURL, setIsFrozen } = useCanvasTool();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const handleUpload = (file: Blob) => {
     const reader = new FileReader();
@@ -12,6 +23,7 @@ export const UploadItem = () => {
       if (typeof reader.result === "string") {
         setImageURL(reader.result);
         setIsFrozen(false);
+        setIsDrawerOpen(false);
       }
     };
     reader.readAsDataURL(file);
@@ -19,20 +31,63 @@ export const UploadItem = () => {
 
   return (
     <>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/png, image/jpeg, image/svg+xml, image/webp"
-        className="hidden"
-        onChange={(e) => {
-          if (e.target.files?.[0]) {
-            handleUpload(e.target.files[0]);
-          }
-        }}
-      />
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent className="max-h-[95%] rounded-t-xl px-6 py-4 overflow-y-auto">
+          <DrawerHeader>
+            <DrawerTitle className="text-xl">Importer une image</DrawerTitle>
+          </DrawerHeader>
+
+          <div className="flex flex-col gap-8 p-1">
+            <div className="flex flex-col gap-1">
+              {/* Input caché */}
+              <input
+                id="file-upload"
+                ref={fileInputRef}
+                type="file"
+                accept="image/png, image/jpeg, image/svg+xml, image/webp"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) {
+                    handleUpload(e.target.files[0]);
+                  }
+                }}
+              />
+
+              {/* Bouton qui déclenche l'input */}
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="mt-2 h-32 hover:opacity-80 text-md active:opacity-50 border-dotted bg-slate-50"
+              >
+                <Upload height={24} width={24} color="lightgray" />
+                Sélectionner un fichier
+              </Button>
+
+              <p className="text-xs text-gray-500 mt-1">
+                Formats supportés : PNG, JPEG, SVG, WEBP
+              </p>
+            </div>
+            <div className="flex flex-col gap-3">
+              <p className="text-sm gap-2 flex flex-row items-center">
+                <Images height={24} width={24} color="lightgray" />
+                Images
+              </p>
+              <div className="flex flex-row gap-4 items-center">
+                <div className=" border shadow-sm rounded-sm flex items-center justify-center">
+                  <img src={imageURL} height={120} width={120} />
+                </div>
+                <Button variant="outline">Supprimer</Button>
+              </div>
+            </div>
+          </div>
+        </DrawerContent>
+      </Drawer>
+
+      {/* Bouton principal pour ouvrir le drawer */}
       <button
-        onClick={() => fileInputRef.current?.click()}
-        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center"
+        onClick={() => setIsDrawerOpen(true)}
+        className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center"
       >
         <ImagePlus height={24} width={24} />
       </button>

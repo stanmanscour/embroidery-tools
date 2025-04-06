@@ -9,7 +9,7 @@ import {
   SetStateAction,
 } from "react";
 
-export type TextConfig = {
+type TextConfig = {
   content: string;
   fontFamily: string;
 };
