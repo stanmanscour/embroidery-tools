@@ -27,9 +27,7 @@ const Canvas = () => {
   return (
     <div
       style={{
-        backgroundImage: isFrozen
-          ? `url('/opacity3.webp`
-          : `url('/quadrillage2.jpg')`,
+        backgroundImage: isFrozen ? `url('/locked3.webp` : `url('/grid.webp')`,
       }}
       className="h-screen bg-cover bg-center text-white"
     >
