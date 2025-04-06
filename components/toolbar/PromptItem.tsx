@@ -23,6 +23,9 @@ import { Skeleton } from "../ui/skeleton";
 
 export type textConfig = { content: string; fontFamily: string };
 
+// TODO: type checking il doit y avoir un text dans le prompt
+// TODO: toast d'erreur
+
 const generateImage = async (userDescription: string) => {
   const response = await fetch("/api/generate-image", {
     method: "POST",
@@ -123,20 +126,15 @@ export const PromptItem = () => {
                   />
 
                   <div className="flex justify-end gap-2 mt-2">
-                    <Button
+                    {/* <Button
                       variant="secondary"
                       type="button"
-                      onClick={() => {
-                        const link = document.createElement("a");
-                        link.href = result.imageUrl;
-                        link.download = "image-generée.png";
-                        link.click();
-                      }}
+                      onClick={() => downloadImageFromUrl(result.imageUrl)}
                       className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
                     >
                       <Download />
                       Télécharger
-                    </Button>
+                    </Button> */}
                     <Button
                       variant="default"
                       type="button"
