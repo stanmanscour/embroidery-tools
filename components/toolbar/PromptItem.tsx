@@ -4,22 +4,12 @@ import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@/components/ui/select";
 
-import { options } from "@/fonts";
 import {
   ChevronUp,
   Download,
   ImagePlus,
   Sparkles,
-  TypeOutline,
   WholeWord,
 } from "lucide-react";
 import { PromptConfig, useCanvasTool } from "@/context/CanvasToolProvider";
@@ -167,10 +157,7 @@ export const PromptItem = () => {
         onClick={() => setIsModalOpen(true)}
         className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
-        {/* <div className="flex flex-row gap-2"> */}
         <Sparkles height={24} width={24} />
-        {/* <TypeOutline height={24} width={24} /> */}
-        {/* </div> */}
         <ChevronUp height={20} width={20} color="lightgray" />
       </button>
     </>
