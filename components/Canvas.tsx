@@ -19,7 +19,7 @@ const Canvas = () => {
 
     textContent,
 
-    imageURL,
+    imagesURL,
 
     selected,
     setSelected,
@@ -42,15 +42,16 @@ const Canvas = () => {
 
         <Stage width={window.innerWidth} height={window.innerHeight}>
           <Layer>
-            {imageURL && (
+            {imagesURL.map((image) => (
               <TransformableImage
-                id="image1"
-                imageURL={imageURL}
-                isSelected={selected === "image1" && !isFrozen}
+                key={image}
+                id={image}
+                imageURL={image}
+                isSelected={selected === image && !isFrozen}
                 onSelect={setSelected}
                 isFrozen={isFrozen}
               />
-            )}
+            ))}
             {textContent.content && (
               <TransformableText
                 id="text1"

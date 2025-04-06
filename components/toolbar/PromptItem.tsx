@@ -42,7 +42,7 @@ const generateImage = async (userDescription: string) => {
 export const PromptItem = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { prompt, setPrompt, setImageURL } = useCanvasTool();
+  const { prompt, setPrompt, setImagesURL } = useCanvasTool();
   const [result, setResult] = useState<PromptResult>();
 
   const handleSubmit = async () => {
@@ -109,7 +109,12 @@ export const PromptItem = () => {
                 Résultat
               </p>
               {isGenerating ? (
-                <Skeleton className="w-full aspect-square rounded-md" />
+                <>
+                  <p className="text-xs text-gray-500 mt-1">
+                    La génération prend plusieurs secondes.
+                  </p>
+                  <Skeleton className="w-full aspect-square rounded-md" />
+                </>
               ) : result ? (
                 <div className="flex flex-col gap-2">
                   <img
@@ -136,7 +141,10 @@ export const PromptItem = () => {
                       variant="default"
                       type="button"
                       onClick={() => {
-                        setImageURL(result.imageUrl);
+                        setImagesURL((previousState) => [
+                          ...previousState,
+                          result.imageUrl,
+                        ]);
                         setIsDrawerOpen(false);
                       }}
                       className="flex gap-1 items-center hover:opacity-80 active:opacity-50"

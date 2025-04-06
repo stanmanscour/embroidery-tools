@@ -8,12 +8,11 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { ImagePlus, Images, Upload } from "lucide-react";
+import { ChevronUp, ImagePlus, Images, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
 export const UploadItem = () => {
-  const { setImageURL, imageURL, setIsFrozen } = useCanvasTool();
+  const { imagesURL, setImagesURL, setIsFrozen } = useCanvasTool();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -21,7 +20,8 @@ export const UploadItem = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
-        setImageURL(reader.result);
+        const newString = reader.result;
+        setImagesURL((previousState) => [...previousState, newString]);
         setIsFrozen(false);
         setIsDrawerOpen(false);
       }
@@ -68,17 +68,35 @@ export const UploadItem = () => {
                 Formats supportés : PNG, JPEG, SVG, WEBP
               </p>
             </div>
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <p className="text-sm gap-2 flex flex-row items-center">
                 <Images height={24} width={24} color="lightgray" />
                 Images
               </p>
-              <div className="flex flex-row gap-4 items-center">
-                <div className=" border shadow-sm rounded-sm flex items-center justify-center">
-                  <img src={imageURL} height={120} width={120} />
-                </div>
-                <Button variant="outline">Supprimer</Button>
-              </div>
+              {imagesURL.length ? (
+                <>
+                  {imagesURL.map((item) => (
+                    <div
+                      key={item}
+                      className="flex flex-row gap-4 items-center"
+                    >
+                      <div className=" border shadow-sm rounded-sm flex items-center justify-center">
+                        <img src={item} height={64} width={64} />
+                      </div>
+                      <Button
+                        variant="outline"
+                        onClick={() =>
+                          setImagesURL(imagesURL.filter((url) => url !== item))
+                        }
+                      >
+                        Supprimer
+                      </Button>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <p className="text-sm text-gray-500">Pas encore d&apos;image</p>
+              )}
             </div>
           </div>
         </DrawerContent>
@@ -90,6 +108,7 @@ export const UploadItem = () => {
         className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center"
       >
         <ImagePlus height={24} width={24} />
+        <ChevronUp height={20} width={20} color="lightgray" />
       </button>
     </>
   );

@@ -22,6 +22,9 @@ type CanvasToolContextType = {
   imageURL: string;
   setImageURL: Dispatch<SetStateAction<string>>;
 
+  imagesURL: string[];
+  setImagesURL: Dispatch<SetStateAction<string[]>>;
+
   textContent: TextConfig;
   setTextContent: Dispatch<SetStateAction<TextConfig>>;
 
@@ -41,6 +44,7 @@ const CanvasToolContext = createContext<CanvasToolContextType | undefined>(
 
 export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
   const [imageURL, setImageURL] = useState<string>("");
+  const [imagesURL, setImagesURL] = useState<string[]>([]);
   const [textContent, setTextContent] = useState<TextConfig>({
     content: "",
     fontFamily: "",
@@ -56,6 +60,8 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
       value={{
         imageURL,
         setImageURL,
+        imagesURL,
+        setImagesURL,
         textContent,
         setTextContent,
         selected,
