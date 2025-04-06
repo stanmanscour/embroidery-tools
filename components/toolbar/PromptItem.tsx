@@ -14,6 +14,7 @@ import {
   Download,
   ImagePlus,
   Sparkles,
+  Wand,
   WholeWord,
 } from "lucide-react";
 import { PromptConfig, useCanvasTool } from "@/context/CanvasToolProvider";
@@ -94,16 +95,16 @@ export const PromptItem = () => {
                   })
                 }
               />
-            </div>
-
-            <div className="flex justify-end gap-2 mt-2">
-              <Button
-                disabled={isGenerating}
-                type="submit"
-                className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
-              >
-                Générer
-              </Button>
+              <div className="flex justify-end gap-2 mt-2">
+                <Button
+                  disabled={isGenerating}
+                  type="submit"
+                  className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+                >
+                  <Wand height={24} width={24} />
+                  Générer
+                </Button>
+              </div>
             </div>
 
             <div className="flex flex-col gap-1">
@@ -119,6 +120,17 @@ export const PromptItem = () => {
                       : `La génération s'affichera ici`}
                   </p>
                   <Skeleton className="w-full aspect-square rounded-md" />
+                  <div className="flex justify-end gap-2 mt-2">
+                    <Button
+                      disabled
+                      variant="default"
+                      type="button"
+                      className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+                    >
+                      <ImagePlus height={24} width={24} />
+                      Utiliser
+                    </Button>
+                  </div>
                 </>
               ) : (
                 <div className="flex flex-col gap-2">
@@ -126,17 +138,7 @@ export const PromptItem = () => {
                     src={result.imageUrl}
                     className="border rounded-md overflow-hidden w-full aspect-square shadow-sm"
                   />
-
                   <div className="flex justify-end gap-2 mt-2">
-                    {/* <Button
-                      variant="secondary"
-                      type="button"
-                      onClick={() => downloadImageFromUrl(result.imageUrl)}
-                      className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
-                    >
-                      <Download />
-                      Télécharger
-                    </Button> */}
                     <Button
                       variant="default"
                       type="button"

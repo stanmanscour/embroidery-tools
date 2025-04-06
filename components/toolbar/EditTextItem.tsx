@@ -118,10 +118,8 @@ export const EditTextItem = () => {
         onClick={() => setIsDrawerOpen(true)}
         className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
-        <div className="flex flex-row gap-2">
-          <WholeWord height={24} width={24} />
-          <TypeOutline height={24} width={24} />
-        </div>
+        <TypeOutline height={24} width={24} />
+
         <ChevronUp height={20} width={20} color="lightgray" />
       </button>
     </>
