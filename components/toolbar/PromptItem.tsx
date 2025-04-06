@@ -1,10 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-
 import {
   ChevronUp,
   Download,
@@ -13,7 +17,6 @@ import {
   WholeWord,
 } from "lucide-react";
 import { PromptConfig, useCanvasTool } from "@/context/CanvasToolProvider";
-import { DialogTitle } from "@radix-ui/react-dialog";
 import { Textarea } from "../ui/textarea";
 import { PromptResult } from "@/app/api/generate-image/route";
 import { Skeleton } from "../ui/skeleton";
@@ -38,7 +41,7 @@ const generateImage = async (userDescription: string) => {
 
 export const PromptItem = () => {
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { prompt, setPrompt, setImageURL } = useCanvasTool();
   const [result, setResult] = useState<PromptResult>();
 
@@ -46,10 +49,7 @@ export const PromptItem = () => {
     try {
       setIsGenerating(true);
       const result = await generateImage(prompt.content);
-      console.log("Image URL :", result.imageUrl);
-      console.log("Prompt enrichi :", result.prompt);
       setResult(result);
-      // Tu peux maintenant afficher l’image ou la sauvegarder où tu veux
     } catch (err) {
       console.error("Erreur génération :", err);
     } finally {
@@ -59,15 +59,15 @@ export const PromptItem = () => {
 
   return (
     <>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-h-full rounded-lg w-[90%] max-w-xl overflow-y-auto mt-4">
-          <DialogHeader>
-            <DialogTitle className="text-xl ">Générer une image</DialogTitle>
-          </DialogHeader>
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent className="max-h-[95%] rounded-t-xl px-6 py-4 overflow-y-auto">
+          <DrawerHeader>
+            <DrawerTitle className="text-xl">Générer une image</DrawerTitle>
+          </DrawerHeader>
 
           <form
             onSubmit={(e) => {
-              e.preventDefault(); // 🛑 empêche le rechargement
+              e.preventDefault();
               handleSubmit();
             }}
             className="p-1 flex flex-col gap-5"
@@ -81,8 +81,8 @@ export const PromptItem = () => {
                 Descriptif
               </Label>
               <Textarea
-                className="hover:opacity-80"
                 id="text-input"
+                className="hover:opacity-80"
                 placeholder="Un canard portant un petit singe"
                 value={prompt.content}
                 onChange={(e) =>
@@ -95,12 +95,11 @@ export const PromptItem = () => {
 
             <div className="flex justify-end gap-2 mt-2">
               <Button
-                //variant=""
+                disabled={isGenerating}
                 type="submit"
                 className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
               >
-                {/* <Image height={20} priority src={saveIcon} alt="Enregistrer" /> */}
-                Générer
+                {isGenerating ? "Chargement..." : "Générer"}
               </Button>
             </div>
 
@@ -110,21 +109,26 @@ export const PromptItem = () => {
                 Résultat
               </p>
               {isGenerating ? (
-                <Skeleton className="w-[100%] aspect-square rounded-md" />
+                <Skeleton className="w-full aspect-square rounded-md" />
               ) : result ? (
                 <div className="flex flex-col gap-2">
                   <img
-                    className="border rounded-md overflow-hidden w-[100%] aspect-square shadow-sm"
                     src={result.imageUrl}
+                    className="border rounded-md overflow-hidden w-full aspect-square shadow-sm"
                   />
 
                   <div className="flex justify-end gap-2 mt-2">
                     <Button
                       variant="secondary"
-                      type="submit"
+                      type="button"
+                      onClick={() => {
+                        const link = document.createElement("a");
+                        link.href = result.imageUrl;
+                        link.download = "image-generée.png";
+                        link.click();
+                      }}
                       className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
                     >
-                      {/* <Image height={20} priority src={saveIcon} alt="Enregistrer" /> */}
                       <Download />
                       Télécharger
                     </Button>
@@ -133,10 +137,10 @@ export const PromptItem = () => {
                       type="button"
                       onClick={() => {
                         setImageURL(result.imageUrl);
+                        setIsDrawerOpen(false);
                       }}
                       className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
                     >
-                      {/* <Image height={20} priority src={saveIcon} alt="Enregistrer" /> */}
                       <ImagePlus height={24} width={24} />
                       Utiliser
                     </Button>
@@ -147,14 +151,13 @@ export const PromptItem = () => {
                   L&apos;image s&apos;affichera ici
                 </p>
               )}
-
-              {/* <pre>{JSON.stringify}</pre> */}
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
+
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsDrawerOpen(true)}
         className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
         <Sparkles height={24} width={24} />

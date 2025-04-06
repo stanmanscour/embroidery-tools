@@ -1,7 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -16,26 +21,25 @@ import {
 import { options } from "@/fonts";
 import { ChevronUp, TypeOutline, WholeWord } from "lucide-react";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
-import { DialogTitle } from "@radix-ui/react-dialog";
 
 export type textConfig = { content: string; fontFamily: string };
 
 export const EditTextItem = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { textContent, setTextContent } = useCanvasTool();
 
   return (
     <>
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-h-full rounded-lg w-[90%] max-w-xl overflow-y-auto mt-4">
-          <DialogHeader>
-            <DialogTitle className="text-xl ">Ajouter du texte</DialogTitle>
-          </DialogHeader>
+      <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
+        <DrawerContent className="max-h-[95%] rounded-t-xl px-6 py-4 overflow-y-auto">
+          <DrawerHeader>
+            <DrawerTitle className="text-xl">Ajouter du texte</DrawerTitle>
+          </DrawerHeader>
 
           <form
             onSubmit={(e) => {
-              e.preventDefault(); // 🛑 empêche le rechargement
-              setIsModalOpen(false);
+              e.preventDefault();
+              setIsDrawerOpen(false);
             }}
             className="p-1 flex flex-col gap-5"
           >
@@ -48,9 +52,9 @@ export const EditTextItem = () => {
                 Texte
               </Label>
               <Input
-                className="hover:opacity-80"
                 id="text-input"
                 placeholder="Texte..."
+                className="hover:opacity-80"
                 value={textContent.content}
                 onChange={(e) =>
                   setTextContent((prevState) => ({
@@ -100,19 +104,18 @@ export const EditTextItem = () => {
 
             <div className="flex justify-end gap-2 mt-2">
               <Button
-                //variant=""
                 type="submit"
                 className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
               >
-                {/* <Image height={20} priority src={saveIcon} alt="Enregistrer" /> */}
                 Fermer
               </Button>
             </div>
           </form>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
+
       <button
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => setIsDrawerOpen(true)}
         className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
         <div className="flex flex-row gap-2">

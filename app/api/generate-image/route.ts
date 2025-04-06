@@ -23,12 +23,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // - Les **couleurs doivent être simples et plates**, sans aucune variation de ton.
     const systemPrompt = `Tu es un assistant expert en design d'illustrations simples et stylisées.
 
-À partir d'une description courte d'utilisateur, génère un prompt plus riche destiné à une IA génératrice d’images. Le but est d’obtenir une illustration en style 2D plat, **très lisible**, avec des formes claires, des couleurs unies, sans dégradé, sans texture ni ombre réaliste.
+À partir d'une description courte d'utilisateur, génère un prompt plus riche destiné à une IA génératrice d’images. Le but est d’obtenir une illustration en style low realism, **très lisible**, avec des formes claires, des couleurs unies, sans dégradé, sans texture ni ombre réaliste.
 
 Elle doit être facilement reproductible à la main (ex : avec du fil, des ciseaux ou un marqueur). Pour cela :
-- Les **couleurs doivent être simples et plates**, sans aucune variation de ton.
+- Proportions justes, 
+- textures aplaties, 
+- contours traits nets
+- palette douce, pas de fond
+
 - Pas de cadre
 - Pas de version multiple : **une seule illustration**.
 - **Réduis les détails complexes** comme les textures, les plis ou les petits traits fins.
