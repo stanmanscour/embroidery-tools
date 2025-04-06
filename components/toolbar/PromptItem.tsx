@@ -153,7 +153,9 @@ export const PromptItem = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">L'image s'affichera ici</p>
+                <p className="text-sm text-gray-500">
+                  L&apos;image s&apos;affichera ici
+                </p>
               )}
 
               {/* <pre>{JSON.stringify}</pre> */}
