@@ -143,7 +143,9 @@ export const PromptItem = () => {
                       Utiliser
                     </Button>
                   ) : (
-                    <p className="text-xs text-gray-500">Pas encore d'image</p>
+                    <p className="text-xs text-gray-500">
+                      Pas encore d&apos;image
+                    </p>
                   )}
                 </div>
                 {/* {isGenerating || !result ? (
