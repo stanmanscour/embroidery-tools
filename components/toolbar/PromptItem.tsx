@@ -102,7 +102,7 @@ export const PromptItem = () => {
                 type="submit"
                 className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
               >
-                {isGenerating ? "Chargement..." : "Générer"}
+                Générer
               </Button>
             </div>
 
@@ -111,14 +111,16 @@ export const PromptItem = () => {
                 <Sparkles height={24} width={24} color="lightgray" />
                 Résultat
               </p>
-              {isGenerating ? (
+              {isGenerating || !result ? (
                 <>
                   <p className="text-xs text-gray-500 mt-1">
-                    La génération prend plusieurs secondes.
+                    {isGenerating
+                      ? "Génération en cours. Elle peut prendre plusieurs secondes."
+                      : `La génération s'affichera ici`}
                   </p>
                   <Skeleton className="w-full aspect-square rounded-md" />
                 </>
-              ) : result ? (
+              ) : (
                 <div className="flex flex-col gap-2">
                   <img
                     src={result.imageUrl}
@@ -152,10 +154,6 @@ export const PromptItem = () => {
                     </Button>
                   </div>
                 </div>
-              ) : (
-                <p className="text-sm text-gray-500">
-                  L&apos;image s&apos;affichera ici
-                </p>
               )}
             </div>
           </form>
