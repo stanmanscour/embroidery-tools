@@ -16,6 +16,7 @@ import {
 import { options } from "@/fonts";
 import { ChevronUp, TypeOutline, WholeWord } from "lucide-react";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
+import { DialogTitle } from "@radix-ui/react-dialog";
 
 export type textConfig = { content: string; fontFamily: string };
 
@@ -28,12 +29,7 @@ export const EditTextItem = () => {
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-h-full rounded-lg w-[90%] max-w-xl overflow-y-auto mt-4">
           <DialogHeader>
-            {/* <DialogTitle className="text-center "> */}
-            <div className="flex flex-row gap-2 justify-center">
-              <WholeWord height={24} width={24} />
-              <TypeOutline height={24} width={24} />
-            </div>
-            {/* </DialogTitle> */}
+            <DialogTitle className="text-xl ">Ajouter du texte</DialogTitle>
           </DialogHeader>
 
           <form
@@ -41,13 +37,18 @@ export const EditTextItem = () => {
               e.preventDefault(); // 🛑 empêche le rechargement
               setIsModalOpen(false);
             }}
-            className="p-1 flex flex-col gap-3"
+            className="p-1 flex flex-col gap-5"
           >
             <div className="flex flex-col gap-1">
-              <Label htmlFor="text-input" className="text-sm">
+              <Label
+                htmlFor="text-input"
+                className="text-sm gap-2 flex flex-row items-center"
+              >
+                <WholeWord height={24} width={24} color="lightgray" />
                 Texte
               </Label>
               <Input
+                className="hover:opacity-80"
                 id="text-input"
                 placeholder="Texte..."
                 value={textContent.content}
@@ -61,8 +62,12 @@ export const EditTextItem = () => {
             </div>
 
             <div className="flex flex-col gap-1">
-              <Label htmlFor="font-select" className="text-sm">
-                Police
+              <Label
+                htmlFor="font-select"
+                className="text-sm gap-2 flex flex-row items-center"
+              >
+                <TypeOutline height={24} width={24} color="lightgray" />
+                Typographie
               </Label>
               <Select
                 value={textContent.fontFamily}
@@ -73,7 +78,10 @@ export const EditTextItem = () => {
                   }))
                 }
               >
-                <SelectTrigger id="font-select" className="w-full">
+                <SelectTrigger
+                  id="font-select"
+                  className="w-full hover:opacity-80 active:opacity-50"
+                >
                   <SelectValue placeholder="Choisir une police" />
                 </SelectTrigger>
                 <SelectContent>
@@ -92,9 +100,9 @@ export const EditTextItem = () => {
 
             <div className="flex justify-end gap-2 mt-2">
               <Button
-                variant="secondary"
+                //variant=""
                 type="submit"
-                className="flex gap-1 items-center"
+                className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
               >
                 {/* <Image height={20} priority src={saveIcon} alt="Enregistrer" /> */}
                 Fermer
@@ -105,7 +113,7 @@ export const EditTextItem = () => {
       </Dialog>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-md rounded-lg flex flex-row justify-center items-center"
+        className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
         <div className="flex flex-row gap-2">
           <WholeWord height={24} width={24} />

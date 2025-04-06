@@ -8,7 +8,7 @@ export const FreezeCanvasItem = () => {
     <>
       <button
         onClick={() => setIsFrozen((previousState: boolean) => !previousState)}
-        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-md rounded-lg flex flex-row justify-center items-center"
+        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center"
       >
         <div className="flex flex-row gap-1 items-center">
           <Hand height={24} width={24} />

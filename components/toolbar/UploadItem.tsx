@@ -32,7 +32,7 @@ export const UploadItem = () => {
       />
       <button
         onClick={() => fileInputRef.current?.click()}
-        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-lg rounded-lg flex flex-row justify-center items-center"
+        className="h-[48px] mb-5 p-3 text-black bg-white gap-1  border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center"
       >
         <ImagePlus height={24} width={24} />
       </button>
