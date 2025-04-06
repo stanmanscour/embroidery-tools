@@ -9,9 +9,13 @@ import {
   SetStateAction,
 } from "react";
 
-type TextConfig = {
+export type TextConfig = {
   content: string;
   fontFamily: string;
+};
+
+export type PromptConfig = {
+  content: string;
 };
 
 type CanvasToolContextType = {
@@ -26,6 +30,9 @@ type CanvasToolContextType = {
 
   isFrozen: boolean;
   setIsFrozen: Dispatch<SetStateAction<boolean>>;
+
+  prompt: PromptConfig;
+  setPrompt: Dispatch<SetStateAction<PromptConfig>>;
 };
 
 const CanvasToolContext = createContext<CanvasToolContextType | undefined>(
@@ -37,6 +44,9 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
   const [textContent, setTextContent] = useState<TextConfig>({
     content: "",
     fontFamily: "",
+  });
+  const [prompt, setPrompt] = useState<PromptConfig>({
+    content: "",
   });
   const [selected, setSelected] = useState<string>("");
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
@@ -52,6 +62,8 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
         setSelected,
         isFrozen,
         setIsFrozen,
+        prompt,
+        setPrompt,
       }}
     >
       {children}

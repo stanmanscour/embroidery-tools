@@ -11,6 +11,7 @@ import { UploadItem } from "./toolbar/UploadItem";
 import { EditTextItem } from "./toolbar/EditTextItem";
 import { FreezeCanvasItem } from "./toolbar/FreezeCanvasItem";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
+import { PromptItem } from "./toolbar/PromptItem";
 
 const Canvas = () => {
   const {
@@ -35,6 +36,7 @@ const Canvas = () => {
         <div className="flex flex-row gap-3 justify-center pt-2">
           <UploadItem />
           <EditTextItem />
+          <PromptItem />
           <FreezeCanvasItem />
         </div>
 
