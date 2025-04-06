@@ -21,6 +21,8 @@ import { PromptConfig, useCanvasTool } from "@/context/CanvasToolProvider";
 import { Textarea } from "../ui/textarea";
 import { PromptResult } from "@/app/api/generate-image/route";
 import { Skeleton } from "../ui/skeleton";
+import { ScrollArea } from "../ui/scroll-area";
+import { Input } from "../ui/input";
 
 export type textConfig = { content: string; fontFamily: string };
 
@@ -64,84 +66,71 @@ export const PromptItem = () => {
   return (
     <>
       <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
-        <DrawerContent className="max-h-[95%] rounded-t-xl px-6 py-4 overflow-y-auto">
+        <DrawerContent className="max-h-[95%] rounded-t-xl px-6 py-4">
           <DrawerHeader>
             <DrawerTitle className="text-xl">Générer une image</DrawerTitle>
           </DrawerHeader>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-            className="p-1 flex flex-col gap-5"
-          >
-            <div className="flex flex-col gap-1">
-              <Label
-                htmlFor="text-input"
-                className="text-sm gap-2 flex flex-row items-center"
-              >
-                <WholeWord height={24} width={24} color="lightgray" />
-                Descriptif
-              </Label>
-              <Textarea
-                id="text-input"
-                className="hover:opacity-80"
-                placeholder="Un canard portant un petit singe"
-                value={prompt.content}
-                onChange={(e) =>
-                  setPrompt({
-                    content: e.target.value,
-                  })
-                }
-              />
-              <div className="flex justify-end gap-2 mt-2">
-                <Button
-                  disabled={isGenerating}
-                  type="submit"
-                  className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+          <ScrollArea>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="p-1 flex flex-col gap-5"
+            >
+              <div className="flex flex-col gap-1">
+                <Label
+                  htmlFor="text-input"
+                  className="text-sm gap-2 flex flex-row items-center"
                 >
-                  <Wand height={24} width={24} />
-                  Générer
-                </Button>
+                  <WholeWord height={24} width={24} color="lightgray" />
+                  Descriptif
+                </Label>
+                <Input
+                  id="text-input"
+                  className="hover:opacity-80"
+                  type="text"
+                  placeholder="Un canard portant un petit singe"
+                  value={prompt.content}
+                  onChange={(e) =>
+                    setPrompt({
+                      content: e.target.value,
+                    })
+                  }
+                />
+                <div className="flex justify-end gap-2 mt-2">
+                  <Button
+                    disabled={isGenerating}
+                    type="submit"
+                    className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+                  >
+                    <Wand height={24} width={24} />
+                    Générer
+                  </Button>
+                </div>
               </div>
-            </div>
 
-            <div className="flex flex-col gap-1">
-              <p className="font-medium text-sm gap-2 flex flex-row items-center">
-                <Sparkles height={24} width={24} color="lightgray" />
-                Résultat
-              </p>
-              {isGenerating || !result ? (
-                <>
-                  <p className="text-xs text-gray-500 mt-1">
-                    {isGenerating
-                      ? "Génération en cours. Elle peut prendre plusieurs secondes."
-                      : `La génération s'affichera ici`}
-                  </p>
-                  <Skeleton className="w-full aspect-square rounded-md" />
-                  <div className="flex justify-end gap-2 mt-2">
-                    <Button
-                      disabled
-                      variant="default"
-                      type="button"
-                      className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
-                    >
-                      <ImagePlus height={24} width={24} />
-                      Utiliser
-                    </Button>
+              <div className="flex flex-col gap-1">
+                <p className="font-medium text-sm gap-2 flex flex-row items-center">
+                  <Sparkles height={24} width={24} color="lightgray" />
+                  Résultat
+                </p>
+                <div className="flex flex-row gap-4 items-center">
+                  <div className=" border shadow-sm rounded-sm flex items-center justify-center">
+                    {result ? (
+                      <img src={result?.imageUrl} height={120} width={120} />
+                    ) : (
+                      <Skeleton className="h-[64px] w-[64px] aspect-square rounded-md" />
+                    )}
                   </div>
-                </>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  <img
-                    src={result.imageUrl}
-                    className="border rounded-md overflow-hidden w-full aspect-square shadow-sm"
-                  />
-                  <div className="flex justify-end gap-2 mt-2">
+                  {isGenerating ? (
+                    <p className="text-xs text-gray-500">
+                      Chargement... Cela peut prendre plusieurs secondes.
+                    </p>
+                  ) : result ? (
                     <Button
-                      variant="default"
-                      type="button"
+                      disabled={!result}
+                      variant="outline"
                       onClick={() => {
                         setImagesURL((previousState) => [
                           ...previousState,
@@ -149,16 +138,62 @@ export const PromptItem = () => {
                         ]);
                         setIsDrawerOpen(false);
                       }}
-                      className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
                     >
                       <ImagePlus height={24} width={24} />
                       Utiliser
                     </Button>
-                  </div>
+                  ) : (
+                    <p className="text-xs text-gray-500">Pas encore d'image</p>
+                  )}
                 </div>
-              )}
-            </div>
-          </form>
+                {/* {isGenerating || !result ? (
+                  <>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {isGenerating
+                        ? "Génération en cours. Elle peut prendre plusieurs secondes."
+                        : `La génération s'affichera ici`}
+                    </p>
+                    <Skeleton className="w-full aspect-square rounded-md" />
+                    <div className="flex justify-end gap-2 mt-2">
+                      <Button
+                        disabled
+                        variant="default"
+                        type="button"
+                        className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+                      >
+                        <ImagePlus height={24} width={24} />
+                        Utiliser
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex flex-col gap-2">
+                    <img
+                      src={result.imageUrl}
+                      className="border rounded-md overflow-hidden w-full aspect-square shadow-sm"
+                    />
+                    <div className="flex justify-end gap-2 mt-2">
+                      <Button
+                        variant="default"
+                        type="button"
+                        onClick={() => {
+                          setImagesURL((previousState) => [
+                            ...previousState,
+                            result.imageUrl,
+                          ]);
+                          setIsDrawerOpen(false);
+                        }}
+                        className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
+                      >
+                        <ImagePlus height={24} width={24} />
+                        Utiliser
+                      </Button>
+                    </div>
+                  </div>
+                )} */}
+              </div>
+            </form>
+          </ScrollArea>
         </DrawerContent>
       </Drawer>
 

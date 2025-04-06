@@ -58,7 +58,7 @@ export const UploadItem = () => {
                 variant="outline"
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="mt-2 h-32 hover:opacity-80 text-md active:opacity-50 border-dotted bg-slate-50"
+                className="mt-2 h-20 hover:opacity-80 text-md active:opacity-50 border-dotted bg-slate-50"
               >
                 <Upload height={24} width={24} color="lightgray" />
                 Sélectionner un fichier
