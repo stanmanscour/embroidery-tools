@@ -4,10 +4,18 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
   ReactNode,
   Dispatch,
   SetStateAction,
 } from "react";
+import {
+  StoredImage,
+  getAllImages,
+  addImage as addImageToDb,
+  removeImage as removeImageFromDb,
+  clearImages as clearImagesFromDb,
+} from "@/lib/indexed-db-utils";
 
 type TextConfig = {
   content: string;
@@ -19,11 +27,9 @@ export type PromptConfig = {
 };
 
 type CanvasToolContextType = {
-  imageURL: string;
-  setImageURL: Dispatch<SetStateAction<string>>;
-
-  imagesURL: string[];
-  setImagesURL: Dispatch<SetStateAction<string[]>>;
+  images: StoredImage[];
+  addImage: (data: string) => Promise<void>;
+  removeImage: (id: string) => Promise<void>;
 
   textContent: TextConfig;
   setTextContent: Dispatch<SetStateAction<TextConfig>>;
@@ -43,8 +49,7 @@ const CanvasToolContext = createContext<CanvasToolContextType | undefined>(
 );
 
 export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
-  const [imageURL, setImageURL] = useState<string>("");
-  const [imagesURL, setImagesURL] = useState<string[]>([]);
+  const [images, setImages] = useState<StoredImage[]>([]);
   const [textContent, setTextContent] = useState<TextConfig>({
     content: "",
     fontFamily: "",
@@ -55,13 +60,31 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
   const [selected, setSelected] = useState<string>("");
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
+  // Charger les images depuis IndexedDB au montage
+  useEffect(() => {
+    const loadImages = async () => {
+      const stored = await getAllImages();
+      setImages(stored);
+    };
+    loadImages();
+  }, []);
+
+  const addImage = async (data: string) => {
+    const newImage = await addImageToDb(data);
+    setImages((prev) => [...prev, newImage]);
+  };
+
+  const removeImage = async (id: string) => {
+    await removeImageFromDb(id);
+    setImages((prev) => prev.filter((img) => img.id !== id));
+  };
+
   return (
     <CanvasToolContext.Provider
       value={{
-        imageURL,
-        setImageURL,
-        imagesURL,
-        setImagesURL,
+        images,
+        addImage,
+        removeImage,
         textContent,
         setTextContent,
         selected,

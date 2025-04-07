@@ -12,7 +12,7 @@ import { ChevronUp, ImagePlus, Images, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 
 export const UploadItem = () => {
-  const { imagesURL, setImagesURL, setIsFrozen } = useCanvasTool();
+  const { images, addImage, removeImage, setIsFrozen } = useCanvasTool();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -21,7 +21,7 @@ export const UploadItem = () => {
     reader.onloadend = () => {
       if (typeof reader.result === "string") {
         const newString = reader.result;
-        setImagesURL((previousState) => [...previousState, newString]);
+        addImage(newString);
         setIsFrozen(false);
         setIsDrawerOpen(false);
       }
@@ -73,21 +73,19 @@ export const UploadItem = () => {
                 <Images height={24} width={24} color="lightgray" />
                 Images
               </p>
-              {imagesURL.length ? (
+              {images.length ? (
                 <>
-                  {imagesURL.map((item) => (
+                  {images.map((item) => (
                     <div
-                      key={item}
+                      key={item.id}
                       className="flex flex-row gap-4 items-center"
                     >
                       <div className=" border shadow-sm rounded-sm flex items-center justify-center">
-                        <img src={item} height={64} width={64} />
+                        <img src={item.data} height={64} width={64} />
                       </div>
                       <Button
                         variant="outline"
-                        onClick={() =>
-                          setImagesURL(imagesURL.filter((url) => url !== item))
-                        }
+                        onClick={() => removeImage(item.id)}
                       >
                         Supprimer
                       </Button>

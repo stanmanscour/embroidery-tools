@@ -47,7 +47,7 @@ export const PromptItem = () => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const { prompt, setPrompt, setImagesURL } = useCanvasTool();
+  const { prompt, setPrompt, addImage } = useCanvasTool();
   const [result, setResult] = useState<PromptResult>();
 
   const handleSubmit = async () => {
@@ -130,10 +130,7 @@ export const PromptItem = () => {
                     disabled={!result}
                     variant="outline"
                     onClick={() => {
-                      setImagesURL((previousState) => [
-                        ...previousState,
-                        result.imageBase64,
-                      ]);
+                      addImage(result.imageBase64);
                       setIsDrawerOpen(false);
                     }}
                   >
