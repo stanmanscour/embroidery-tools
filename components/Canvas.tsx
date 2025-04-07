@@ -42,7 +42,7 @@ const Canvas = () => {
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 z-50">
-          <div className="flex flex-row gap-3 justify-center p-2">
+          <div className="flex flex-row gap-3 justify-center px-2 pb-5">
             <UploadItem />
             <EditTextItem />
             <PromptItem />
