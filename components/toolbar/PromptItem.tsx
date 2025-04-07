@@ -54,6 +54,7 @@ export const PromptItem = () => {
   const handleSubmit = async () => {
     try {
       setIsGenerating(true);
+      setResult(undefined);
       const result = await generateImage(prompt.content);
       setResult(result);
     } catch (err) {
@@ -70,13 +71,7 @@ export const PromptItem = () => {
           <DrawerHeader>
             <DrawerTitle className="text-xl">Générer une image</DrawerTitle>
           </DrawerHeader>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-            className="p-1 flex flex-col gap-5"
-          >
+          <div className="p-1 flex flex-col gap-5">
             <div className="flex flex-col gap-1">
               <Label
                 htmlFor="text-input"
@@ -100,7 +95,7 @@ export const PromptItem = () => {
               <div className="flex justify-end gap-2 mt-2">
                 <Button
                   disabled={isGenerating}
-                  type="submit"
+                  onClick={handleSubmit}
                   className="flex gap-1 items-center hover:opacity-80 active:opacity-50"
                 >
                   <Wand height={24} width={24} />
@@ -117,7 +112,7 @@ export const PromptItem = () => {
               <div className="flex flex-row gap-4 items-center">
                 <div className=" border shadow-sm rounded-sm flex items-center justify-center">
                   {result ? (
-                    <img src={result?.imageUrl} height={120} width={120} />
+                    <img src={result.imageBase64} height={120} width={120} />
                   ) : (
                     <Skeleton className="h-[64px] w-[64px] aspect-square rounded-md" />
                   )}
@@ -133,7 +128,7 @@ export const PromptItem = () => {
                     onClick={() => {
                       setImagesURL((previousState) => [
                         ...previousState,
-                        result.imageUrl,
+                        result.imageBase64,
                       ]);
                       setIsDrawerOpen(false);
                     }}
@@ -193,7 +188,7 @@ export const PromptItem = () => {
                   </div>
                 )} */}
             </div>
-          </form>
+          </div>
         </DrawerContent>
       </Drawer>
 
