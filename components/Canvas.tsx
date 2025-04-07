@@ -12,6 +12,7 @@ import { EditTextItem } from "./toolbar/EditTextItem";
 import { FreezeCanvasItem } from "./toolbar/FreezeCanvasItem";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
 import { PromptItem } from "./toolbar/PromptItem";
+import { SnapshotItem } from "./toolbar/SnapshotItem";
 
 const Canvas = () => {
   const {
@@ -33,11 +34,19 @@ const Canvas = () => {
       className="h-screen bg-cover bg-center text-white"
     >
       <div className="">
-        <div className="flex flex-row gap-3 justify-center pt-2">
-          <UploadItem />
-          <EditTextItem />
-          <PromptItem />
-          <FreezeCanvasItem />
+        <div className="absolute top-0 left-0 right-0 z-50">
+          {/* justify-between if 2 items */}
+          <div className="flex flex-row gap-3 justify-center p-2">
+            {/* <SnapshotItem /> */}
+            <FreezeCanvasItem />
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 z-50">
+          <div className="flex flex-row gap-3 justify-center p-2">
+            <UploadItem />
+            <EditTextItem />
+            <PromptItem />
+          </div>
         </div>
 
         <Stage width={window.innerWidth} height={window.innerHeight}>

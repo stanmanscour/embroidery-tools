@@ -30,8 +30,8 @@ export const TransformableText = ({
     rotation: number;
     fontSize?: number;
   }>({
-    x: 20,
-    y: 20,
+    x: 100,
+    y: 100,
     rotation: 0,
   });
 

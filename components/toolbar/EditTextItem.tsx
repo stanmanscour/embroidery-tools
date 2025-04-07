@@ -116,7 +116,7 @@ export const EditTextItem = () => {
 
       <button
         onClick={() => setIsDrawerOpen(true)}
-        className="h-[48px] mb-5 p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
+        className="h-[48px] p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
         <TypeOutline height={24} width={24} />
 

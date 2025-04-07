@@ -13,6 +13,8 @@ import {
   ChevronUp,
   Download,
   ImagePlus,
+  Palette,
+  ScanHeart,
   Sparkles,
   Wand,
   WholeWord,
@@ -43,7 +45,7 @@ const generateImage = async (userDescription: string) => {
   return await response.json(); // { imageUrl, prompt }
 };
 
-export const PromptItem = () => {
+export const SnapshotItem = () => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -152,7 +154,8 @@ export const PromptItem = () => {
         onClick={() => setIsDrawerOpen(true)}
         className="h-[48px] p-3 text-black bg-white gap-1 border shadow-md hover:opacity-80 active:opacity-50 rounded-lg flex flex-row justify-center items-center "
       >
-        <Sparkles height={24} width={24} />
+        <Palette height={24} width={24} />
+        <p className="font-semibold text-sm ">Dossier 1</p>
         <ChevronUp height={20} width={20} color="lightgray" />
       </button>
     </>
