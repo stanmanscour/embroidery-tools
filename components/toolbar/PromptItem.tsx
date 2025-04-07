@@ -17,17 +17,15 @@ import {
   Wand,
   WholeWord,
 } from "lucide-react";
-import { PromptConfig, useCanvasTool } from "@/context/CanvasToolProvider";
-import { Textarea } from "../ui/textarea";
+import { useCanvasTool } from "@/context/CanvasToolProvider";
 import { PromptResult } from "@/app/api/generate-image/route";
 import { Skeleton } from "../ui/skeleton";
-import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
+import { useToast } from "@/hooks/use-toast";
 
 export type textConfig = { content: string; fontFamily: string };
 
 // TODO: type checking il doit y avoir un text dans le prompt
-// TODO: toast d'erreur
 
 const generateImage = async (userDescription: string) => {
   const response = await fetch("/api/generate-image", {
@@ -46,6 +44,7 @@ const generateImage = async (userDescription: string) => {
 };
 
 export const PromptItem = () => {
+  const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { prompt, setPrompt, setImagesURL } = useCanvasTool();
@@ -58,6 +57,11 @@ export const PromptItem = () => {
       const result = await generateImage(prompt.content);
       setResult(result);
     } catch (err) {
+      toast({
+        variant: "destructive",
+        title: "Une erreur est survenue.",
+        description: "Je pense qu'il faut contacter le dev...",
+      });
       console.error("Erreur génération :", err);
     } finally {
       setIsGenerating(false);
