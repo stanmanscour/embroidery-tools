@@ -18,22 +18,23 @@ import {
   WholeWord,
 } from "lucide-react";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
-import { PromptResult } from "@/app/api/generate-image/route";
+import { PromptResult, Payload } from "@/app/api/generate-image/route";
 import { Skeleton } from "../ui/skeleton";
 import { Input } from "../ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { IllustrationStyle } from "@/lib/prompts";
 
 export type textConfig = { content: string; fontFamily: string };
 
 // TODO: type checking il doit y avoir un text dans le prompt
 
-const generateImage = async (userDescription: string) => {
+const generateImage = async (payload: Payload): Promise<PromptResult> => {
   const response = await fetch("/api/generate-image", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ userDescription }),
+    body: JSON.stringify(payload),
   });
 
   if (!response.ok) {
@@ -47,6 +48,8 @@ export const PromptItem = () => {
   const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [illustrationStyle, setIllustrationStyle] =
+    useState<IllustrationStyle>("classic");
   const { prompt, setPrompt, addImage } = useCanvasTool();
   const [result, setResult] = useState<PromptResult>();
 
@@ -54,7 +57,10 @@ export const PromptItem = () => {
     try {
       setIsGenerating(true);
       setResult(undefined);
-      const result = await generateImage(prompt.content);
+      const result = await generateImage({
+        illustrationStyle,
+        userDescription: prompt.content,
+      });
       setResult(result);
     } catch (err) {
       toast({
@@ -76,26 +82,60 @@ export const PromptItem = () => {
             <DrawerTitle className="text-xl">Générer une image</DrawerTitle>
           </DrawerHeader>
           <div className="p-1 flex flex-col gap-5">
-            <div className="flex flex-col gap-1">
-              <Label
-                htmlFor="text-input"
-                className="text-sm gap-2 flex flex-row items-center"
-              >
-                <WholeWord height={24} width={24} color="lightgray" />
-                Descriptif
-              </Label>
-              <Input
-                id="text-input"
-                className="hover:opacity-80"
-                type="text"
-                placeholder="Un canard portant un petit singe"
-                value={prompt.content}
-                onChange={(e) =>
-                  setPrompt({
-                    content: e.target.value,
-                  })
-                }
-              />
+            <div className="p-1 flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <Label
+                  htmlFor="text-input"
+                  className="text-sm gap-2 flex flex-row items-center"
+                >
+                  <WholeWord height={24} width={24} color="lightgray" />
+                  Descriptif
+                </Label>
+
+                <Input
+                  id="text-input"
+                  className="hover:opacity-80"
+                  type="text"
+                  placeholder="Un canard portant un petit singe"
+                  value={prompt.content}
+                  onChange={(e) =>
+                    setPrompt({
+                      content: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label
+                  htmlFor="text-input"
+                  className="text-sm gap-2 flex flex-row items-center"
+                >
+                  <WholeWord height={24} width={24} color="lightgray" />
+                  Style
+                </Label>
+                <div className="flex flex-row gap-3">
+                  <Label className="text-sm gap-2 flex flex-row items-center">
+                    <input
+                      type="radio"
+                      name="illustrationStyle"
+                      value="classic"
+                      checked={illustrationStyle === "classic"}
+                      onChange={() => setIllustrationStyle("classic")}
+                    />
+                    Classique
+                  </Label>
+                  <Label className="text-sm gap-2 flex flex-row items-center">
+                    <input
+                      type="radio"
+                      name="illustrationStyle"
+                      value="outline"
+                      checked={illustrationStyle === "outline"}
+                      onChange={() => setIllustrationStyle("outline")}
+                    />
+                    Contour
+                  </Label>
+                </div>
+              </div>
               <div className="flex justify-end gap-2 mt-2">
                 <Button
                   disabled={isGenerating}

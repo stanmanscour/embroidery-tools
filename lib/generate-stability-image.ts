@@ -1,17 +1,14 @@
+const outputFormat = "webp";
+
 export async function generateStabilityImage(
   prompt: string,
-  seed = 0,
-  aspectRatio = "1:1",
-  outputFormat: "webp" | "jpeg" | "png" = "webp"
+  negativePrompt: string
 ) {
   const formData = new FormData();
   formData.append("prompt", prompt);
-  formData.append(
-    "negative_prompt",
-    "gradients, shading, textures, shadows, realistic, photographic, complex details, background"
-  );
-  formData.append("aspect_ratio", aspectRatio);
-  formData.append("seed", seed.toString());
+  formData.append("negative_prompt", negativePrompt);
+  formData.append("aspect_ratio", "1:1");
+  formData.append("seed", "0");
   formData.append("output_format", outputFormat);
 
   const response = await fetch(
@@ -20,7 +17,7 @@ export async function generateStabilityImage(
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.STABILITY_API_KEY!}`,
-        Accept: "image/*", // PAS de Content-Type ici, c'est FormData qui le gère automatiquement
+        Accept: "image/*",
       },
       body: formData,
     }
@@ -40,10 +37,8 @@ export async function generateStabilityImage(
   const blob = await response.blob();
   const arrayBuffer = await blob.arrayBuffer();
   const base64Image = Buffer.from(arrayBuffer).toString("base64");
-  const seedUsed = response.headers.get("seed") || seed;
 
   return {
     imageBase64: `data:image/${outputFormat};base64,${base64Image}`,
-    seed: seedUsed,
   };
 }
