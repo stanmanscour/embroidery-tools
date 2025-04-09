@@ -28,6 +28,7 @@ export type PromptConfig = {
 
 type CanvasToolContextType = {
   images: StoredImage[];
+
   addImage: (data: string) => Promise<void>;
   removeImage: (id: string) => Promise<void>;
 
@@ -35,6 +36,7 @@ type CanvasToolContextType = {
   setTextContent: Dispatch<SetStateAction<TextConfig>>;
 
   selected: string;
+  selectedImage?: StoredImage;
   setSelected: Dispatch<SetStateAction<string>>;
 
   isFrozen: boolean;
@@ -69,6 +71,8 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
     loadImages();
   }, []);
 
+  const selectedImage = images.filter((image) => image.id === selected)[0];
+
   const addImage = async (data: string) => {
     const newImage = await addImageToDb(data);
     setImages((prev) => [...prev, newImage]);
@@ -87,6 +91,7 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
         removeImage,
         textContent,
         setTextContent,
+        selectedImage,
         selected,
         setSelected,
         isFrozen,

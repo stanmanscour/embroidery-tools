@@ -58,7 +58,7 @@ export const PromptItem = () => {
       setIsGenerating(true);
       setResult(undefined);
       const result = await generateImage({
-        illustrationStyle,
+        illustrationStyle: "classic",
         userDescription: prompt.content,
       });
       setResult(result);
@@ -105,7 +105,8 @@ export const PromptItem = () => {
                   }
                 />
               </div>
-              <div className="flex flex-col gap-1">
+              {/* TODO: use it or not */}
+              {/* <div className="flex flex-col gap-1">
                 <Label
                   htmlFor="text-input"
                   className="text-sm gap-2 flex flex-row items-center"
@@ -135,7 +136,7 @@ export const PromptItem = () => {
                     Contour
                   </Label>
                 </div>
-              </div>
+              </div> */}
               <div className="flex justify-end gap-2 mt-2">
                 <Button
                   disabled={isGenerating}

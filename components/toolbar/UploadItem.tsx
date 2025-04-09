@@ -74,7 +74,7 @@ export const UploadItem = () => {
                 Images
               </p>
               {images.length ? (
-                <>
+                <div className="flex flex-col gap-5">
                   {images.map((item) => (
                     <div
                       key={item.id}
@@ -84,14 +84,14 @@ export const UploadItem = () => {
                         <img src={item.data} height={64} width={64} />
                       </div>
                       <Button
-                        variant="outline"
+                        variant="destructive"
                         onClick={() => removeImage(item.id)}
                       >
                         Supprimer
                       </Button>
                     </div>
                   ))}
-                </>
+                </div>
               ) : (
                 <p className="text-sm text-gray-500">Pas encore d&apos;image</p>
               )}

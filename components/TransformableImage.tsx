@@ -3,6 +3,7 @@
 import Konva from "konva";
 import React, { useRef, useEffect, useState } from "react";
 import { Image, Transformer } from "react-konva";
+import { Html } from "react-konva-utils";
 import useImage from "use-image";
 
 export const TransformableImage = ({
@@ -18,6 +19,7 @@ export const TransformableImage = ({
   imageURL: string;
   isFrozen: boolean;
 }) => {
+  const [optionsVisible, setOptionsVisible] = useState(true);
   const imageRef = useRef<Konva.Image>(null);
   const transformerRef = useRef<Konva.Transformer>(null);
   const [image] = useImage(imageURL);

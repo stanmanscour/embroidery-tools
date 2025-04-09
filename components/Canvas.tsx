@@ -13,6 +13,7 @@ import { FreezeCanvasItem } from "./toolbar/FreezeCanvasItem";
 import { useCanvasTool } from "@/context/CanvasToolProvider";
 import { PromptItem } from "./toolbar/PromptItem";
 import { SnapshotItem } from "./toolbar/SnapshotItem";
+import { EnhanceImage } from "./toolbar/EnhanceImage";
 
 const Canvas = () => {
   const {
@@ -41,11 +42,19 @@ const Canvas = () => {
             <FreezeCanvasItem />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 z-50">
-          <div className="flex flex-row gap-3 justify-center px-2 pb-5">
-            <UploadItem />
-            <EditTextItem />
-            <PromptItem />
+        {!isFrozen ? (
+          <div className="absolute bottom-0 left-0 right-0 z-50">
+            <div className="flex flex-row gap-3 justify-center px-2 pb-5">
+              <UploadItem />
+              <EditTextItem />
+              <PromptItem />
+            </div>
+          </div>
+        ) : undefined}
+
+        <div className="absolute top-0 bottom-0 left-0 z-50 border">
+          <div className="flex flex-col h-full gap-3 justify-center items-center px-2 pb-5">
+            <EnhanceImage />
           </div>
         </div>
 
