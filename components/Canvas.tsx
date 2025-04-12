@@ -16,16 +16,8 @@ import { SnapshotItem } from "./toolbar/SnapshotItem";
 import { EnhanceImage } from "./toolbar/EnhanceImage";
 
 const Canvas = () => {
-  const {
-    isFrozen,
-
-    textContent,
-
-    images,
-
-    selected,
-    setSelected,
-  } = useCanvasTool();
+  const { isFrozen, textContent, images, selected, setSelected } =
+    useCanvasTool();
 
   return (
     <div
@@ -52,7 +44,7 @@ const Canvas = () => {
           </div>
         ) : undefined}
 
-        <div className="absolute top-0 bottom-0 left-0 z-50 border">
+        <div className="absolute top-0 bottom-0 left-0 z-50">
           <div className="flex flex-col h-full gap-3 justify-center items-center px-2 pb-5">
             <EnhanceImage />
           </div>

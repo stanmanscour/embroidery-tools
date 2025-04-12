@@ -8,14 +8,19 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ImagePlus, Images, Upload } from "lucide-react";
-import { useRef, useState } from "react";
+import { ChevronUp, LoaderCircle } from "lucide-react";
+import { useState } from "react";
 import type {
   ImageModification,
   Payload,
   Response,
 } from "@/app/api/edit-image/route";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
+
+const imageModificationTypeLabel: Record<ImageModification, string> = {
+  CONVERT_TO_OUTLINE: "Conversion en contours",
+  REMOVE_BACKGROUND: "Suppression du fond",
+};
 
 const generateImage = async (payload: Payload): Promise<Response> => {
   const response = await fetch("/api/edit-image", {
@@ -34,6 +39,7 @@ const generateImage = async (payload: Payload): Promise<Response> => {
 };
 
 export const EnhanceImage = () => {
+  const { toast } = useToast();
   const [isGenerating, setIsGenerating] = useState(false);
 
   const { selectedImage, addImage, removeImage, isFrozen } = useCanvasTool();
@@ -52,6 +58,11 @@ export const EnhanceImage = () => {
       });
 
       addImage(result.imageBase64);
+      setIsDrawerOpen(false);
+      toast({
+        title: "Image ajoutée.",
+        description: `${imageModificationTypeLabel[imageModificationType]} réussie`,
+      });
     } catch (err) {
       toast({
         variant: "destructive",
@@ -61,6 +72,7 @@ export const EnhanceImage = () => {
       console.error("Erreur génération :", err);
     } finally {
       setIsGenerating(false);
+      setIsDrawerOpen(false);
     }
   };
 
@@ -105,7 +117,7 @@ export const EnhanceImage = () => {
                   handleSubmit("CONVERT_TO_OUTLINE" as ImageModification);
                 }}
               >
-                Transformer en contour
+                Définir les contours
               </Button>
             </div>
 
@@ -125,7 +137,17 @@ export const EnhanceImage = () => {
           height={64}
           width={64}
         />
-        <ChevronUp height={20} width={20} color="lightgray" />
+
+        {isGenerating ? (
+          <LoaderCircle
+            height={20}
+            width={20}
+            color="lightgray"
+            className="animate-spin"
+          />
+        ) : (
+          <ChevronUp height={20} width={20} color="lightgray" />
+        )}
       </button>
     </>
   );
