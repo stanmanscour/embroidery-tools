@@ -1,6 +1,3 @@
-export const runtime = "nodejs";
-
-import sharp from "sharp";
 import { NextRequest, NextResponse } from "next/server";
 import { removeBackgroundFromImage } from "@/lib/remove-background";
 import { promises as fs } from "fs";

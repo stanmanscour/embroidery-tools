@@ -17,11 +17,6 @@ import type {
 } from "@/app/api/edit-image/route";
 import { useToast } from "@/hooks/use-toast";
 
-const imageModificationTypeLabel: Record<ImageModification, string> = {
-  CONVERT_TO_OUTLINE: "Conversion en contours",
-  REMOVE_BACKGROUND: "Suppression du fond",
-};
-
 const generateImage = async (payload: Payload): Promise<Response> => {
   const response = await fetch("/api/edit-image", {
     method: "POST",
@@ -59,10 +54,6 @@ export const EnhanceImage = () => {
 
       addImage(result.imageBase64);
       setIsDrawerOpen(false);
-      toast({
-        title: "Image ajoutée.",
-        description: `${imageModificationTypeLabel[imageModificationType]} réussie`,
-      });
     } catch (err) {
       toast({
         variant: "destructive",
