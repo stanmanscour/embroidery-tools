@@ -1,6 +1,7 @@
+const outputFormat = "webp";
+
 export async function removeBackgroundFromImage(
-  imageBuffer: Buffer,
-  outputFormat: "webp" | "jpeg" | "png" = "webp"
+  imageBuffer: Buffer
 ): Promise<{ imageBase64: string; seed: string | null }> {
   const formData = new FormData();
   const file = new Blob([imageBuffer]);

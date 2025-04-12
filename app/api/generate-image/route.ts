@@ -44,10 +44,7 @@ export async function POST(req: NextRequest) {
     const base64 = stabilityResponse.imageBase64.split(",")[1]; // enlever "data:image/...;base64,"
     const imageBuffer = Buffer.from(base64, "base64");
 
-    const { imageBase64 } = await removeBackgroundFromImage(
-      imageBuffer,
-      "webp"
-    );
+    const { imageBase64 } = await removeBackgroundFromImage(imageBuffer);
 
     const result: PromptResult = {
       imageBase64,
