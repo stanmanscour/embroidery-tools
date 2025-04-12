@@ -8,6 +8,7 @@ import { convertBase64ToBuffer } from "@/lib/convert-image";
 
 const styleImagePath = path.resolve("./assets/outline-ref3.webp");
 
+export type ImageModification = "REMOVE_BACKGROUND" | "CONVERT_TO_OUTLINE";
 export interface Response {
   imageBase64: string;
   imageModificationType: ImageModification;
@@ -16,11 +17,6 @@ export interface Response {
 export interface Payload {
   base64Image: string;
   imageModificationType: ImageModification;
-}
-
-export enum ImageModification {
-  REMOVE_BACKGROUND = "REMOVE_BACKGROUND",
-  CONVERT_TO_OUTLINE = "CONVERT_TO_OUTLINE",
 }
 
 export async function POST(req: NextRequest) {
@@ -39,14 +35,14 @@ export async function POST(req: NextRequest) {
 
     try {
       switch (imageModificationType) {
-        case ImageModification.REMOVE_BACKGROUND:
+        case "REMOVE_BACKGROUND":
           const { imageBase64 } = await removeBackgroundFromImage(imageBuffer);
 
           return NextResponse.json({
             imageBase64,
             imageModificationType,
           });
-        case ImageModification.CONVERT_TO_OUTLINE:
+        case "CONVERT_TO_OUTLINE":
           const referenceStyleImage = await fs.readFile(styleImagePath);
 
           const outlinedImageBase64 = await transferImageStyle(
