@@ -3,6 +3,7 @@ import { generatePromptFromUserDescription } from "@/lib/generate-openai-prompt"
 import { generateStabilityImage } from "@/lib/generate-stability-image";
 import { removeBackgroundFromImage } from "@/lib/remove-background";
 import { IllustrationStyle } from "@/lib/prompts";
+import { convertBase64ToBuffer } from "@/lib/convert-image";
 
 export interface PromptResult {
   imageBase64: string;
@@ -41,8 +42,7 @@ export async function POST(req: NextRequest) {
       illustrationStyle,
     });
 
-    const base64 = stabilityResponse.imageBase64.split(",")[1]; // enlever "data:image/...;base64,"
-    const imageBuffer = Buffer.from(base64, "base64");
+    const imageBuffer = convertBase64ToBuffer(stabilityResponse.imageBase64);
 
     const { imageBase64 } = await removeBackgroundFromImage(imageBuffer);
 
