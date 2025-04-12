@@ -5,6 +5,7 @@ import path from "path";
 
 import { transferImageStyle } from "@/lib/convert-image-to-outline";
 import { convertBase64ToBuffer } from "@/lib/convert-image";
+import { resizeToMaxPixels } from "@/lib/resize-image";
 
 const styleImagePath = path.resolve("./assets/outline-ref3.webp");
 
@@ -33,10 +34,14 @@ export async function POST(req: NextRequest) {
 
     const imageBuffer = convertBase64ToBuffer(base64Image);
 
+    const resizedBuffer = await resizeToMaxPixels(imageBuffer);
+
     try {
       switch (imageModificationType) {
         case "REMOVE_BACKGROUND":
-          const { imageBase64 } = await removeBackgroundFromImage(imageBuffer);
+          const { imageBase64 } = await removeBackgroundFromImage(
+            resizedBuffer
+          );
 
           return NextResponse.json({
             imageBase64,
@@ -47,7 +52,7 @@ export async function POST(req: NextRequest) {
 
           const outlinedImageBase64 = await transferImageStyle(
             referenceStyleImage,
-            imageBuffer
+            resizedBuffer
           );
 
           const convertedOutlinedImageBuffer =
