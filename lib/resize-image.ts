@@ -3,7 +3,7 @@ import sharp from "sharp";
 const MAX_PIXELS = 4194304;
 
 export async function resizeToMaxPixels(inputBuffer: Buffer): Promise<Buffer> {
-  const image = sharp(inputBuffer);
+  const image = sharp(inputBuffer).rotate();
   const metadata = await image.metadata();
 
   const { width, height } = metadata;
