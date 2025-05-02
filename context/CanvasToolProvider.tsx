@@ -16,10 +16,22 @@ import {
   removeImage as removeImageFromDb,
   clearImages as clearImagesFromDb,
 } from "@/lib/indexed-db-utils";
+import { EssentialLogo } from "@/public/essential-images/logo";
 
 type TextConfig = {
   content: string;
   fontFamily: string;
+};
+
+export type EssentialImage = StoredImage & {
+  isVisible: boolean;
+  dimensions: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    rotation: number;
+  };
 };
 
 export type PromptConfig = {
@@ -31,6 +43,9 @@ type CanvasToolContextType = {
 
   addImage: (data: string) => Promise<void>;
   removeImage: (id: string) => Promise<void>;
+
+  essentialImages: EssentialImage[];
+  toggleEssentialImage: (id: string) => void;
 
   textContent: TextConfig;
   setTextContent: Dispatch<SetStateAction<TextConfig>>;
@@ -51,6 +66,9 @@ const CanvasToolContext = createContext<CanvasToolContextType | undefined>(
 );
 
 export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
+  const [essentialImages, setEssentialImages] = useState<EssentialImage[]>([
+    EssentialLogo,
+  ]);
   const [images, setImages] = useState<StoredImage[]>([]);
   const [textContent, setTextContent] = useState<TextConfig>({
     content: "",
@@ -83,6 +101,26 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
     setImages((prev) => prev.filter((img) => img.id !== id));
   };
 
+  const toggleEssentialImage = (id: string) => {
+    console.log(id);
+    const newEssentialImages: EssentialImage[] = essentialImages.map(
+      (essentialImage) => {
+        if (essentialImage.id === id) {
+          console.log(`change visibility of ${id}`);
+          return {
+            ...essentialImage,
+            isVisible: !essentialImage.isVisible,
+          };
+        }
+
+        return essentialImage;
+      }
+    );
+    setEssentialImages(newEssentialImages);
+  };
+
+  console.log(essentialImages[0]);
+
   return (
     <CanvasToolContext.Provider
       value={{
@@ -98,6 +136,8 @@ export const CanvasToolProvider = ({ children }: { children: ReactNode }) => {
         setIsFrozen,
         prompt,
         setPrompt,
+        essentialImages,
+        toggleEssentialImage,
       }}
     >
       {children}

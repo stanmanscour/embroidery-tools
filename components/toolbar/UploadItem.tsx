@@ -8,11 +8,19 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { ChevronUp, ImagePlus, Images, Upload } from "lucide-react";
+import { ChevronUp, ImagePlus, Images, Star, Upload } from "lucide-react";
 import { useRef, useState } from "react";
+import { StoredImage } from "@/lib/indexed-db-utils";
 
 export const UploadItem = () => {
-  const { images, addImage, removeImage, setIsFrozen } = useCanvasTool();
+  const {
+    images,
+    addImage,
+    removeImage,
+    setIsFrozen,
+    essentialImages,
+    toggleEssentialImage,
+  } = useCanvasTool();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -96,10 +104,33 @@ export const UploadItem = () => {
                 <p className="text-sm text-gray-500">Pas encore d&apos;image</p>
               )}
             </div>
+            <div className="flex flex-col gap-2">
+              <p className="text-sm gap-2 flex flex-row items-center">
+                <Star height={24} width={24} color="lightgray" />
+                Essentiels
+              </p>
+              <div className="flex flex-col gap-5">
+                {essentialImages.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex flex-row gap-4 items-center"
+                  >
+                    <div className=" border shadow-sm rounded-sm flex items-center justify-center">
+                      <img src={item.data} height={64} width={64} />
+                    </div>
+                    <Button
+                      variant={item.isVisible ? "destructive" : "default"}
+                      onClick={() => toggleEssentialImage(item.id)}
+                    >
+                      {item.isVisible ? "Cacher" : "Montrer"}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </DrawerContent>
       </Drawer>
-
       {/* Bouton principal pour ouvrir le drawer */}
       <button
         onClick={() => setIsDrawerOpen(true)}
