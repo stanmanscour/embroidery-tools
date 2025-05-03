@@ -1,19 +1,10 @@
 "use client";
 
-import { EssentialImage } from "@/context/CanvasToolProvider";
 import Konva from "konva";
 import React, { useRef, useEffect, useState } from "react";
 import { Image, Transformer } from "react-konva";
 import { Html } from "react-konva-utils";
 import useImage from "use-image";
-
-const DEFAULT_DIMENSIONS = {
-  x: 20,
-  y: 20,
-  width: 0,
-  height: 0,
-  rotation: 0,
-};
 
 export const TransformableImage = ({
   imageURL,
@@ -21,24 +12,27 @@ export const TransformableImage = ({
   onSelect,
   isFrozen,
   id,
-  defaultDimensions = DEFAULT_DIMENSIONS,
 }: {
   id: string;
   isSelected: boolean;
   onSelect: (id: string) => void;
   imageURL: string;
   isFrozen: boolean;
-  defaultDimensions?: EssentialImage["dimensions"];
 }) => {
   const [optionsVisible, setOptionsVisible] = useState(true);
   const imageRef = useRef<Konva.Image>(null);
   const transformerRef = useRef<Konva.Transformer>(null);
   const [image] = useImage(imageURL);
-  const [dimensions, setDimensions] = useState(defaultDimensions);
+  const [dimensions, setDimensions] = useState({
+    x: 20,
+    y: 20,
+    width: 0,
+    height: 0,
+    rotation: 0,
+  });
 
   useEffect(() => {
     if (!image) return;
-    if (id.includes("essential")) return;
 
     // Calcul pour que l'image prenne 50% de la largeur de l'écran par défaut
     const scale = (window.innerWidth * 0.5) / image.width;

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { ChevronUp, ImagePlus, Images, Star, Upload } from "lucide-react";
 import { useRef, useState } from "react";
 import { StoredImage } from "@/lib/indexed-db-utils";
+import { ESSENTIAL_PAULETTE_LOGO_ID } from "../essentials/PauletteLogo/EssentialPauletteLogo";
+import { pauletteLogoBase64 } from "../essentials/PauletteLogo/data";
 
 export const UploadItem = () => {
   const {
@@ -110,22 +112,30 @@ export const UploadItem = () => {
                 Essentiels
               </p>
               <div className="flex flex-col gap-5">
-                {essentialImages.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex flex-row gap-4 items-center"
-                  >
-                    <div className=" border shadow-sm rounded-sm flex items-center justify-center">
-                      <img src={item.data} height={64} width={64} />
-                    </div>
-                    <Button
-                      variant={item.isVisible ? "destructive" : "default"}
-                      onClick={() => toggleEssentialImage(item.id)}
-                    >
-                      {item.isVisible ? "Cacher" : "Montrer"}
-                    </Button>
+                <div className="flex flex-row gap-4 items-center">
+                  <div className=" border shadow-sm rounded-sm flex items-center justify-center">
+                    <img src={pauletteLogoBase64} height={64} width={64} />
                   </div>
-                ))}
+                  {essentialImages.includes(ESSENTIAL_PAULETTE_LOGO_ID) ? (
+                    <Button
+                      variant="destructive"
+                      onClick={() =>
+                        toggleEssentialImage(ESSENTIAL_PAULETTE_LOGO_ID)
+                      }
+                    >
+                      Cacher
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="outline"
+                      onClick={() =>
+                        toggleEssentialImage(ESSENTIAL_PAULETTE_LOGO_ID)
+                      }
+                    >
+                      Afficher
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

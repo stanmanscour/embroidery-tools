@@ -14,16 +14,11 @@ import { useCanvasTool } from "@/context/CanvasToolProvider";
 import { PromptItem } from "./toolbar/PromptItem";
 import { SnapshotItem } from "./toolbar/SnapshotItem";
 import { EnhanceImage } from "./toolbar/EnhanceImage";
+import { EssentialPauletteLogo } from "./essentials/PauletteLogo/EssentialPauletteLogo";
 
 const Canvas = () => {
-  const {
-    isFrozen,
-    textContent,
-    images,
-    selected,
-    setSelected,
-    essentialImages,
-  } = useCanvasTool();
+  const { isFrozen, textContent, images, selected, setSelected } =
+    useCanvasTool();
 
   return (
     <div
@@ -58,19 +53,7 @@ const Canvas = () => {
 
         <Stage width={window.innerWidth} height={window.innerHeight}>
           <Layer>
-            {essentialImages
-              .filter((i) => i.isVisible)
-              .map((image) => (
-                <TransformableImage
-                  key={image.id}
-                  id={image.id}
-                  imageURL={image.data}
-                  isSelected={false}
-                  onSelect={() => {}}
-                  isFrozen={true}
-                  defaultDimensions={image.dimensions}
-                />
-              ))}
+            <EssentialPauletteLogo />
             {images.map((image) => (
               <TransformableImage
                 key={image.id}
